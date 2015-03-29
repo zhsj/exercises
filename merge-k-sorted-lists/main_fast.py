@@ -18,42 +18,20 @@ class Solution:
     # @return a ListNode
     def mergeKLists(self, lists):
         """
-        比较简单的做法，但速度有点慢。
-        先将 n 个 ListNodes 划分，划分到 2 个时合并。
-        速度慢的原因猜测：难道因为递归调用效率低？
+        这是一个比较 low 的做法，但是很快。首先它没有重复创建对象，
+        然后直接用了 sort 来排序。
         """
-        n = len(lists)
-        if n == 0:
-            return None
-        if n == 1:
-            return lists[0]
-        elif n == 2:
-            return self.mergeTwo(lists[0], lists[1])
-        else:
-            l1 = self.mergeKLists(lists[0:n/2])
-            l2 = self.mergeKLists(lists[n/2:n])
-            return self.mergeTwo(l1,l2)
-
-    def mergeTwo(self, ListNode1, ListNode2):
+        from operator import attrgetter
         sorted_list = []
-        while ListNode1 and ListNode2:
-            if ListNode1.val < ListNode2.val:
-                sorted_list.append(ListNode1)
-                ListNode1 = ListNode1.next
-            else:
-                sorted_list.append(ListNode2)
-                ListNode2 = ListNode2.next
-        while ListNode1:
-            sorted_list.append(ListNode1)
-            ListNode1 = ListNode1.next
-        while ListNode2:
-            sorted_list.append(ListNode2)
-            ListNode2 = ListNode2.next
+        for head in lists:
+            while head:
+                sorted_list.append(head)
+                head = head.next
+        sorted_list.sort(key=attrgetter('val'))
         sorted_list.append(None)
         for i in range(0,len(sorted_list)-1):
             sorted_list[i].next = sorted_list[i+1]
         return sorted_list[0]
-
 
 def make_list(l):
     result = [ListNode(i) for i in l]
@@ -63,6 +41,7 @@ def make_list(l):
         return result[0]
     else:
         return None
+
 
 def print_node(node):
     while node:
