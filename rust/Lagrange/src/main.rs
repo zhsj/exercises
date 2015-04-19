@@ -1,7 +1,5 @@
-#![feature(core)]
 extern crate rand;
 
-use std::num::Float;
 use std::f64::consts;
 use rand::distributions::{IndependentSample, Range};
 
